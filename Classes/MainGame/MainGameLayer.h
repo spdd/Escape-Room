@@ -9,15 +9,13 @@
 
 class MainGameLayer : 
 	public cocos2d::Layer,
-    public cocosbuilder::CCBSelectorResolver,
-    public cocosbuilder::NodeLoaderListener
+    public cocosbuilder::CCBSelectorResolver
 {
 public:
 	CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(MainGameLayer, create);
 
 	virtual cocos2d::SEL_MenuHandler onResolveCCBCCMenuItemSelector(Ref * pTarget, const char* pSelectorName);
 	virtual cocos2d::extension::Control::Handler onResolveCCBCCControlSelector(Ref * pTarget, const char* pSelectorName);
-	virtual void onNodeLoaded(cocos2d::Node * node, cocosbuilder::NodeLoader * nodeLoader);
 	void tappedPlayButton(Ref * pTarget, cocos2d::extension::Control::EventType pControlEventType);
 	void onMenuItemAClicked(cocos2d::Ref * sender);
 	MainGameLayer();
