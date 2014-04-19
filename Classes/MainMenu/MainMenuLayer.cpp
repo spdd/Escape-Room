@@ -1,4 +1,5 @@
 #include "../TestHeader/TestHeaderLayerLoader.h"
+#include "../MainGame/MainGameLoader.h"
 #include "MainMenuLayer.h"
 
 USING_NS_CC;
@@ -111,5 +112,5 @@ void MainMenuLayer::tappedPlayButton(Ref * pTarget, Control::EventType pControlE
 
 void MainMenuLayer::onMenuItemAClicked(cocos2d::Ref *pSender) {
 	CCLOG("onMenuItemAClicked");
-   // this->mMenuItemStatusLabelBMFont->setString("Menu Item A clicked.");
+    this->openScene("ccb/ccb/TestMenus.ccbi", "MainMenuLayer", MainGameLoader::loader());
 }
