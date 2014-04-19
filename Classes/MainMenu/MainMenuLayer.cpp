@@ -10,7 +10,6 @@ MainMenuLayer::MainMenuLayer() {}
 MainMenuLayer::~MainMenuLayer() 
 {
 
-//    CC_SAFE_RELEASE(mStartConrolButton);
 //    CC_SAFE_RELEASE(mBg2);
 //    CC_SAFE_RELEASE(mBg3);
 //    CC_SAFE_RELEASE_NULL(mAnimationManager);
