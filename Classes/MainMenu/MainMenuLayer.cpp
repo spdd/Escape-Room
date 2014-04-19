@@ -9,8 +9,6 @@ MainMenuLayer::MainMenuLayer() {}
 
 MainMenuLayer::~MainMenuLayer() 
 {
-
-//    CC_SAFE_RELEASE(mBg3);
 //    CC_SAFE_RELEASE_NULL(mAnimationManager);
 //    CC_SAFE_RELEASE(mLeftButton);
 //    CC_SAFE_RELEASE(mRightButton);
