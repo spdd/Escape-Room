@@ -34,12 +34,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
 		searchPaths = FileUtils::sharedFileUtils()->getSearchPaths();
 		searchPaths.insert(searchPaths.begin(), "Published-iOS"); // Resources/Published-iOS
 		FileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
-        if (screenSize.height > 768)
+        if (screenSize.width > 768)
         {
             resourceSize = CCSizeMake(1536, 2048);
             resDirOrders.push_back("resources-ipadhd");
         }
-        else if (screenSize.height > 640)
+        else if (screenSize.width > 640)
         {
             resourceSize = CCSizeMake(768, 1536);
             resDirOrders.push_back("resources-ipad");
@@ -82,7 +82,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	//FileUtils::sharedFileUtils()->setSearchResolutionsOrder(resDirOrders);
 	
 	director->setContentScaleFactor(resourceSize.width/designSize.width);
-	glview->setDesignResolutionSize(designSize.width, designSize.height, kResolutionShowAll);
+	glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::FIXED_WIDTH);
     // turn on display FPS
     director->setDisplayStats(true);
 
