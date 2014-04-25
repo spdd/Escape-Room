@@ -16,53 +16,67 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-		glview = GLView::createWithRect("Escape Room", Rect(0,0,640,960)); // for windows
+		glview = GLView::createWithRect("Escape Room", Rect(0,0, 768, 1280)); // for windows
 		//glview = GLView::create("Escape Room");
         director->setOpenGLView(glview);
     }
 
-	Size designSize = CCSizeMake(640,960);
-    Size resourceSize = CCSizeMake(640,960);
+	Size designSize = Size(320,480);
+    Size resourceSize = Size(640,960);
 	Size screenSize = glview->getFrameSize();
 	
 	std::vector<std::string> resDirOrders;
 	std::vector<std::string> searchPaths;
 
-	TargetPlatform platform = Application::sharedApplication()->getTargetPlatform();
-	if (platform == kTargetIphone || platform == kTargetIpad)
+	Platform platform = Application::getInstance()->getTargetPlatform();
+	if (platform == Platform::OS_IPHONE || platform == Platform::OS_IPAD)
     {
-		searchPaths = FileUtils::sharedFileUtils()->getSearchPaths();
+		searchPaths = FileUtils::getInstance()->getSearchPaths();
 		searchPaths.insert(searchPaths.begin(), "Published-iOS"); // Resources/Published-iOS
-		FileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
+		FileUtils::getInstance()->setSearchPaths(searchPaths);
         if (screenSize.width > 768)
         {
-            resourceSize = CCSizeMake(1536, 2048);
+            resourceSize = Size(1536, 2048);
             resDirOrders.push_back("resources-ipadhd");
         }
         else if (screenSize.width > 640)
         {
-            resourceSize = CCSizeMake(768, 1024);
+            resourceSize = Size(768, 1024);
             resDirOrders.push_back("resources-ipad");
         }else if (screenSize.width > 480)
         {
-            resourceSize = CCSizeMake(640, 960);
+            resourceSize = Size(640, 960);
             resDirOrders.push_back("resources-iphonehd");
         }
         else
         {
             resDirOrders.push_back("resources-iphone");
         }
-		FileUtils::sharedFileUtils()->setSearchResolutionsOrder(resDirOrders);
+		FileUtils::getInstance()->setSearchResolutionsOrder(resDirOrders);
 		
 	}
-	else if (platform == kTargetAndroid || platform == kTargetWindows)
+	else if (platform == Platform::OS_ANDROID || platform == Platform::OS_WINDOWS)
 	{
-		searchPaths = FileUtils::sharedFileUtils()->getSearchPaths();
+		searchPaths = FileUtils::getInstance()->getSearchPaths();
 		searchPaths.insert(searchPaths.begin(), "Published-Android"); // Resources/Published-Android
-		FileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
+		FileUtils::getInstance()->setSearchPaths(searchPaths);
+
+		resourceSize = Size(640, 960);
+		resDirOrders.push_back("resources-large");
+
+		float kDeviceH = screenSize.height/screenSize.width;
+
+		if (screenSize.width <= 640 && kDeviceH >= 2.0)
+			resDirOrders.push_back("resources-wall-large");
+		else if(screenSize.width <= 640)
+			resDirOrders.push_back("resources-wall-medium");
+		else
+			resDirOrders.push_back("resources-wall-small");
+
+		/*
 		if (screenSize.height >= 960)
 		{
-			resourceSize = CCSizeMake(640, 960);
+			resourceSize = Size(640, 960);
 			resDirOrders.push_back("resources-large");
 		}
 		else if (screenSize.height > 480)
@@ -75,8 +89,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 			resourceSize = CCSizeMake(320, 568);
 			resDirOrders.push_back("resources-small");
 		}
+		*/
 
-		FileUtils::sharedFileUtils()->setSearchResolutionsOrder(resDirOrders);
+		FileUtils::getInstance()->setSearchResolutionsOrder(resDirOrders);
 	}
 
 	//FileUtils::sharedFileUtils()->setSearchResolutionsOrder(resDirOrders);

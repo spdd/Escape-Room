@@ -132,7 +132,7 @@ void MainGameLayer::setDoorTouchListener()
 	listener1->onTouchMoved = [](Touch* touch, Event* event){
         auto target = static_cast<Sprite*>(event->getCurrentTarget());
         //Move the position of current button sprite
-        target->setPosition(target->getPosition() + touch->getDelta());
+        //target->setPosition(target->getPosition() + touch->getDelta());
     };
 
     //Process the touch end event
