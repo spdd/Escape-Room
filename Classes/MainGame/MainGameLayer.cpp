@@ -1,4 +1,5 @@
-#include "MainGameLayer.h"
+﻿#include "MainGameLayer.h"
+#include <memory>
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -11,7 +12,10 @@ MainGameLayer::MainGameLayer()
 	mInvItem3(nullptr),
 	mInvItem4(nullptr),
 	mInvItem5(nullptr)
-{}
+{
+
+
+}
 
 MainGameLayer::~MainGameLayer() 
 {
@@ -30,7 +34,16 @@ bool MainGameLayer::init()
     {
         return false;
     }
-    return true;
+
+	//auto listener1 = EventListenerTouchOneByOne::create();
+	//listener1->setSwallowTouches(true);
+	//listener1->onTouchBegan = CC_CALLBACK_2(MainGameLayer::onTouchBegan, this);
+	//listener1->onTouchMoved = CC_CALLBACK_2(MainGameLayer::onTouchMoved, this);
+    //listener1->onTouchEnded = CC_CALLBACK_2(MainGameLayer::onTouchEnded, this);
+	//this->getEventDispatcher()->addEventListenerWithFixedPriority(listener1, 1);
+    //_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this);
+
+	return true;
 }
 
 void MainGameLayer::onEnterTransitionDidFinish()
@@ -42,6 +55,55 @@ void MainGameLayer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
     auto ccRotateBy = RotateBy::create(20.0f, 360);
     auto ccRepeatForever = RepeatForever::create(ccRotateBy);
 	this->mInvItem1->runAction(ccRepeatForever);
+
+	auto listener1 = EventListenerTouchOneByOne::create();
+	listener1->setSwallowTouches(true);
+
+	listener1->onTouchBegan = [](Touch* touch, Event* event) {
+        // event->getCurrentTarget() returns the *listener's* sceneGraphPriority node.
+		//onTouchBegan(touch, event);
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+
+        //Get the position of the current point relative to the button
+        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+        Size s = target->getContentSize();
+        Rect rect = Rect(0, 0, s.width, s.height);
+
+        //Check the click area
+        if (rect.containsPoint(locationInNode))
+        {			
+			//target->setColor(Color3B::RED);
+			log("sprite tag:%d  began... x = %f, y = %f",target->getTag(),  locationInNode.x, locationInNode.y);
+            target->setOpacity(180);
+            return true;
+        }
+        return false;
+    };
+
+	listener1->onTouchMoved = [](Touch* touch, Event* event){
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        //Move the position of current button sprite
+        target->setPosition(target->getPosition() + touch->getDelta());
+    };
+
+    //Process the touch end event
+    listener1->onTouchEnded = [=](Touch* touch, Event* event){
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        log("sprite onTouchesEnded.. ");
+        target->setOpacity(255);
+        //Reset zOrder and the display sequence will change
+		if (target == this->mDoor)
+        {
+            this->mDoor->setZOrder(100);
+        }
+        else if(target == this->mDoor)
+        {
+            this->mDoor->setZOrder(0);
+        }
+		this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
+
+    };
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mDoor);
 }
 
 SEL_MenuHandler MainGameLayer::onResolveCCBCCMenuItemSelector(Ref * pTarget, const char * pSelectorName) {

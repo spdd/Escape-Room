@@ -26,6 +26,15 @@ public:
 	MainGameLayer();
 	virtual ~MainGameLayer();
 
+	//void onTouchesEnded(const std::vector<Touch*>& touches, Event* event);
+    //virtual void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
+	//virtual void onEnter() override;
+
+	//virtual bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
+    //virtual void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
+    //virtual void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
+    //virtual void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
+
 	virtual bool init();
 	virtual void onEnterTransitionDidFinish();
 private:

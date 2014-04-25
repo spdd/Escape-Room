@@ -21,8 +21,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
-	Size designSize = CCSizeMake(640, 960);
-    Size resourceSize = CCSizeMake(640, 960);
+	Size designSize = CCSizeMake(640,960);
+    Size resourceSize = CCSizeMake(640,960);
 	Size screenSize = glview->getFrameSize();
 	
 	std::vector<std::string> resDirOrders;
@@ -41,7 +41,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         }
         else if (screenSize.width > 640)
         {
-            resourceSize = CCSizeMake(768, 1536);
+            resourceSize = CCSizeMake(768, 1024);
             resDirOrders.push_back("resources-ipad");
         }else if (screenSize.width > 480)
         {
@@ -60,7 +60,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 		searchPaths = FileUtils::sharedFileUtils()->getSearchPaths();
 		searchPaths.insert(searchPaths.begin(), "Published-Android"); // Resources/Published-Android
 		FileUtils::sharedFileUtils()->setSearchPaths(searchPaths);
-		if (screenSize.height > 960)
+		if (screenSize.height >= 960)
 		{
 			resourceSize = CCSizeMake(640, 960);
 			resDirOrders.push_back("resources-large");
