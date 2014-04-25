@@ -12,10 +12,7 @@ MainGameLayer::MainGameLayer()
 	mInvItem3(nullptr),
 	mInvItem4(nullptr),
 	mInvItem5(nullptr)
-{
-
-
-}
+{}
 
 MainGameLayer::~MainGameLayer() 
 {
@@ -56,6 +53,58 @@ void MainGameLayer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
     auto ccRepeatForever = RepeatForever::create(ccRotateBy);
 	this->mInvItem1->runAction(ccRepeatForever);
 
+	// set touch listener
+	setDoorTouchListener();
+	setInventarItemsTouchListener();
+}
+
+SEL_MenuHandler MainGameLayer::onResolveCCBCCMenuItemSelector(Ref * pTarget, const char * pSelectorName) {
+	CCLOG("name = %s", pSelectorName);
+	CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onPressButton", MainGameLayer::onMenuItemAClicked);
+	//CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onPressButton", MainMenuLayer::tappedPlayButton);
+    return NULL;    
+}
+
+Control::Handler MainGameLayer::onResolveCCBCCControlSelector(Ref * pTarget, const char *pSelectorName)
+{
+    CCLOG("name = %s", pSelectorName);
+    
+    CCB_SELECTORRESOLVER_CCCONTROL_GLUE(this, "onPlayPressedd", MainGameLayer::tappedPlayButton);
+    return NULL;
+}
+
+bool MainGameLayer::onAssignCCBMemberVariable(Ref * pTarget, const char * pMemberVariableName, Node * pNode) {
+    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "door", Sprite *, this->mDoor);
+	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem1", Sprite *, this->mInvItem1);
+	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem2", Sprite *, this->mInvItem2);
+	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem3", Sprite *, this->mInvItem3);
+	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem4", Sprite *, this->mInvItem4);
+	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem5", Sprite *, this->mInvItem5);
+    return false;
+}
+
+void MainGameLayer::tappedPlayButton(Ref * pTarget, Control::EventType pControlEventType)
+{
+	CCLOG("tappedPlayButton eventType = %d", pControlEventType);
+	//Scene* scene = MapSceneLoader::scene();
+    //TransitionProgressInOut* trans = TransitionProgressInOut::create(1, scene);
+    //Director::getInstance()->replaceScene(trans);
+}
+
+void MainGameLayer::onMenuItemAClicked(cocos2d::Ref *pSender) {
+	CCLOG("onMenuItemAClicked");
+    //this->openScene("ccb/ccb/TestMenus.ccbi", "TestMenusLayer", MainGameLoader::loader());
+}
+
+#pragma mark Touch Events Section
+#pragma mark -
+
+/**
+*	Door touch events 
+**/
+
+void MainGameLayer::setDoorTouchListener()
+{
 	auto listener1 = EventListenerTouchOneByOne::create();
 	listener1->setSwallowTouches(true);
 
@@ -106,40 +155,57 @@ void MainGameLayer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mDoor);
 }
 
-SEL_MenuHandler MainGameLayer::onResolveCCBCCMenuItemSelector(Ref * pTarget, const char * pSelectorName) {
-	CCLOG("name = %s", pSelectorName);
-	CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onPressButton", MainGameLayer::onMenuItemAClicked);
-	//CCB_SELECTORRESOLVER_CCMENUITEM_GLUE(this, "onPressButton", MainMenuLayer::tappedPlayButton);
-    return NULL;    
-}
-
-Control::Handler MainGameLayer::onResolveCCBCCControlSelector(Ref * pTarget, const char *pSelectorName)
+/**
+*	Inventar items touch events 
+**/
+void MainGameLayer::setInventarItemsTouchListener()
 {
-    CCLOG("name = %s", pSelectorName);
-    
-    CCB_SELECTORRESOLVER_CCCONTROL_GLUE(this, "onPlayPressedd", MainGameLayer::tappedPlayButton);
-    return NULL;
-}
+	auto listener1 = EventListenerTouchOneByOne::create();
+	listener1->setSwallowTouches(true);
 
-bool MainGameLayer::onAssignCCBMemberVariable(Ref * pTarget, const char * pMemberVariableName, Node * pNode) {
-    CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "door", Sprite *, this->mDoor);
-	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem1", Sprite *, this->mInvItem1);
-	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem2", Sprite *, this->mInvItem2);
-	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem3", Sprite *, this->mInvItem3);
-	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem4", Sprite *, this->mInvItem4);
-	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem5", Sprite *, this->mInvItem5);
-    return false;
-}
+	listener1->onTouchBegan = [](Touch* touch, Event* event) {
+        // event->getCurrentTarget() returns the *listener's* sceneGraphPriority node.
+		//onTouchBegan(touch, event);
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
 
-void MainGameLayer::tappedPlayButton(Ref * pTarget, Control::EventType pControlEventType)
-{
-	CCLOG("tappedPlayButton eventType = %d", pControlEventType);
-	//Scene* scene = MapSceneLoader::scene();
-    //TransitionProgressInOut* trans = TransitionProgressInOut::create(1, scene);
-    //Director::getInstance()->replaceScene(trans);
-}
+        //Get the position of the current point relative to the button
+        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+        Size s = target->getContentSize();
+        Rect rect = Rect(0, 0, s.width, s.height);
 
-void MainGameLayer::onMenuItemAClicked(cocos2d::Ref *pSender) {
-	CCLOG("onMenuItemAClicked");
-    //this->openScene("ccb/ccb/TestMenus.ccbi", "TestMenusLayer", MainGameLoader::loader());
+        //Check the click area
+        if (rect.containsPoint(locationInNode))
+        {			
+			//target->setColor(Color3B::RED);
+			log("sprite tag:%d  began... x = %f, y = %f",target->getTag(),  locationInNode.x, locationInNode.y);
+            target->setOpacity(180);
+            return true;
+        }
+        return false;
+    };
+
+	listener1->onTouchMoved = [](Touch* touch, Event* event){
+    };
+
+    //Process the touch end event
+    listener1->onTouchEnded = [=](Touch* touch, Event* event){
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        log("sprite onTouchesEnded.. ");
+        target->setOpacity(255);
+        //Reset zOrder and the display sequence will change
+		if (target == this->mInvItem2)
+        {
+            this->mInvItem2->setZOrder(100);
+        }
+        else if(target == this->mInvItem2)
+        {
+            this->mInvItem2->setZOrder(0);
+        }
+
+    };
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mInvItem1);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem2);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem3);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem4);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem5);
 }

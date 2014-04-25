@@ -44,6 +44,9 @@ private:
 	cocos2d::Sprite * mInvItem3;
     cocos2d::Sprite * mInvItem4;
     cocos2d::Sprite * mInvItem5;
+
+	void setDoorTouchListener();
+	void setInventarItemsTouchListener();
 };
 
 #endif
