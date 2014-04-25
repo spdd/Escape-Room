@@ -16,7 +16,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-		glview = GLView::createWithRect("Escape Room", Rect(0,0, 768, 1280)); // for windows
+		glview = GLView::createWithRect("Escape Room", Rect(0,0, 640, 960)); // for windows
 		//glview = GLView::create("Escape Room");
         director->setOpenGLView(glview);
     }
