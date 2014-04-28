@@ -67,11 +67,15 @@ int LevelManager::getLastLevelNumber()
 
 	int i = 1;
 	for(auto imap : mInstance->mLevels) {
-		if(imap.second == 0 && i == 1)
+		if(imap.second == 0 && i == 1) {
+			currentLevelNumber = 1;
 			return 1;
+		}
 		i++;
-		if(imap.second == 0)
+		if(imap.second == 0) {
+			currentLevelNumber = i;
 			return i;
+		}
 	}
 }
 
