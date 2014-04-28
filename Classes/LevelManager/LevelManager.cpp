@@ -1,15 +1,15 @@
 #include "LevelManager.h"
 
 LevelManager* LevelManager::mInstance = nullptr;
-std::map<std::string, int> mLevels = Constants::createMap();
 
 LevelManager::LevelManager() {}
 LevelManager::~LevelManager() {}
 
 LevelManager* LevelManager::getInstance() 
 {
-	if(!mInstance)
+	if(!mInstance) {
 		mInstance = new LevelManager;
+	}
 
 	return mInstance;
 }
@@ -22,8 +22,7 @@ void LevelManager::loadFromJson(std::string jsonStr)
 	if(doc.IsObject()) {
 		for(auto it = doc.MemberonBegin(); it != doc.MemberonEnd(); ++it) {
             std::string key = it->name.GetString();
-            int value = it->value.GetInt();
-            
+            int value = it->value.GetInt();         
 			mInstance->mLevels.insert(make_pair(key, value));
         }		
 	}
@@ -77,6 +76,11 @@ int LevelManager::getLastLevelNumber()
 			return i;
 		}
 	}
+}
+
+void LevelManager::loadNextLevel() 
+{
+	
 }
 
 

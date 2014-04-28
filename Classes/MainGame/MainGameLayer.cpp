@@ -1,4 +1,6 @@
 ﻿#include "MainGameLayer.h"
+#include "../TestHeader/TestHeaderLayerLoader.h"
+#include "../Levels/Level1/Level1Loader.h"
 
 USING_NS_CC;
 USING_NS_CC_EXT;
@@ -148,7 +150,10 @@ void MainGameLayer::setDoorTouchListener()
         {
             this->mDoor->setZOrder(0);
         }
-		this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
+		if(isOpenDoor) {
+			this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
+			this->openScene("Level1Scene.ccbi", "Level1Layer", Level1Loader::loader());
+		}
 
     };
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mDoor);
@@ -194,6 +199,7 @@ void MainGameLayer::setInventarItemsTouchListener()
         //Reset zOrder and the display sequence will change
 		if (target == this->mInvItem2)
         {
+			inventar2CBFunc();
             this->mInvItem2->setZOrder(100);
         }
         else if(target == this->mInvItem2)
@@ -207,4 +213,65 @@ void MainGameLayer::setInventarItemsTouchListener()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem3);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem4);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem5);
+}
+
+void MainGameLayer::openScene(const char * pCCBFileName, const char * nodeName, NodeLoader * nodeLoader) {
+    /* Create an autorelease NodeLoaderLibrary. */
+    NodeLoaderLibrary * ccNodeLoaderLibrary = NodeLoaderLibrary::newDefaultNodeLoaderLibrary();
+
+    ccNodeLoaderLibrary->registerNodeLoader("TestHeaderLayer", TestHeaderLayerLoader::loader());
+    if(nodeName != NULL && nodeLoader != NULL) {
+        ccNodeLoaderLibrary->registerNodeLoader(nodeName, nodeLoader);
+    }
+
+    /* Create an autorelease CCBReader. */
+    cocosbuilder::CCBReader * ccbReader = new cocosbuilder::CCBReader(ccNodeLoaderLibrary);
+    ccbReader->autorelease();
+
+    /* Read a ccbi file. */
+    // Load the scene from the ccbi-file, setting this class as
+    // the owner will cause lblTestTitle to be set by the CCBReader.
+    // lblTestTitle is in the TestHeader.ccbi, which is referenced
+    // from each of the test scenes.
+    auto node = ccbReader->readNodeGraphFromFile(pCCBFileName, this);
+
+    //this->mTestTitleLabelTTF->setString(pCCBFileName);
+
+    auto scene = Scene::create();
+    if(node != NULL) {
+        scene->addChild(node);
+    }
+
+    /* Push the new scene with a fancy transition. */
+    Color3B transitionColor;
+    transitionColor.r = 0;
+    transitionColor.g = 0;
+    transitionColor.b = 0;
+    
+    Director::getInstance()->pushScene(TransitionFade::create(0.5f, scene, transitionColor));
+}
+
+void MainGameLayer::setInventar1CallBackFunction(InventarCallbackFunc func) 
+{
+	this->inventar1CBFunc = func;
+}
+
+void MainGameLayer::setInventar2CallBackFunction(InventarCallbackFunc func) 
+{
+	this->inventar2CBFunc = func;
+}
+
+void MainGameLayer::setInventar3CallBackFunction(InventarCallbackFunc func) 
+{
+	this->inventar3CBFunc = func;
+}
+
+void MainGameLayer::setInventar4CallBackFunction(InventarCallbackFunc func) 
+{
+	this->inventar4CBFunc = func;
+}
+
+void MainGameLayer::setInventar5CallBackFunction(InventarCallbackFunc func) 
+{
+	this->inventar5CBFunc = func;
 }
