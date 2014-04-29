@@ -112,5 +112,5 @@ void MainMenuLayer::tappedPlayButton(Ref * pTarget, Control::EventType pControlE
 
 void MainMenuLayer::onMenuItemAClicked(cocos2d::Ref *pSender) {
 	CCLOG("onMenuItemAClicked");
-    this->openScene("MainGameScene.ccbi", "MainGameLayer", MainGameLoader::loader());
+    this->openScene("ccb/MainGameScene.ccbi", "MainGameLayer", MainGameLoader::loader());
 }

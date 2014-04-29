@@ -18,6 +18,10 @@ public:
 
 	bool isOpenDoor;
 	int levelNumber;
+	int currentInvItemNumber;
+	std::vector<int> itemsSolutionArray; 
+
+	int getItemIndexNumber();
 
 	void openScene(const char * pCCBFileName, const char * nodeName = NULL, cocosbuilder::NodeLoader * nodeLoader = NULL);
 	virtual cocos2d::SEL_MenuHandler onResolveCCBCCMenuItemSelector(Ref * pTarget, const char* pSelectorName);
@@ -42,20 +46,9 @@ public:
 	virtual bool init();
 	virtual void onEnterTransitionDidFinish();
 
-private:
+protected:
 	// callback function pointer for inventar click logic
-	typedef void (*InventarCallbackFunc)();
-	InventarCallbackFunc inventar1CBFunc;
-	InventarCallbackFunc inventar2CBFunc;
-	InventarCallbackFunc inventar3CBFunc;
-	InventarCallbackFunc inventar4CBFunc;
-	InventarCallbackFunc inventar5CBFunc;
-
-	void setInventar1CallBackFunction(InventarCallbackFunc func);
-	void setInventar2CallBackFunction(InventarCallbackFunc func);
-	void setInventar3CallBackFunction(InventarCallbackFunc func);
-	void setInventar4CallBackFunction(InventarCallbackFunc func);
-	void setInventar5CallBackFunction(InventarCallbackFunc func);
+	std::function<void()> inventoryLogicCallback;
 
 	cocos2d::Sprite * mDoor;
 	cocos2d::Sprite * mInvItem1;
@@ -64,6 +57,7 @@ private:
     cocos2d::Sprite * mInvItem4;
     cocos2d::Sprite * mInvItem5;
 
+private:
 	void setDoorTouchListener();
 	void setInventarItemsTouchListener();
 };

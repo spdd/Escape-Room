@@ -13,7 +13,7 @@ cocos2d::Scene* MainMenuLoader::createScene()
     nodeLoaderLibrary->registerNodeLoader("MainMenuLayer", MainMenuLoader::loader());
     
     cocosbuilder::CCBReader* ccbReader = new cocosbuilder::CCBReader(nodeLoaderLibrary);
-    cocos2d::Node* node = ccbReader->readNodeGraphFromFile("MainScene.ccbi");
+    cocos2d::Node* node = ccbReader->readNodeGraphFromFile("ccb/MainScene.ccbi");
     
     cocos2d::Scene* pScene = cocos2d::Scene::create();
     if (node != NULL)

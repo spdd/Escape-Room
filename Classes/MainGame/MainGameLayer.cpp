@@ -15,16 +15,21 @@ MainGameLayer::MainGameLayer()
 	mInvItem5(nullptr)
 {
 	this->isOpenDoor = false;
+	this->levelNumber = 0;
+	this->currentInvItemNumber = -1;
+	for (int i = 0; i < 5; i++) {
+		itemsSolutionArray[i] = 0;
+	}
 }
 
 MainGameLayer::~MainGameLayer() 
 {
 	CC_SAFE_RELEASE_NULL(mDoor);
-    CC_SAFE_RELEASE(mInvItem1);
-    CC_SAFE_RELEASE(mInvItem2);
-    CC_SAFE_RELEASE(mInvItem3);
-    CC_SAFE_RELEASE(mInvItem4);
-	CC_SAFE_RELEASE(mInvItem5);
+    CC_SAFE_RELEASE_NULL(mInvItem1);
+    CC_SAFE_RELEASE_NULL(mInvItem2);
+    CC_SAFE_RELEASE_NULL(mInvItem3);
+    CC_SAFE_RELEASE_NULL(mInvItem4);
+	CC_SAFE_RELEASE_NULL(mInvItem5);
 }
 
 bool MainGameLayer::init()
@@ -51,6 +56,12 @@ void MainGameLayer::onEnterTransitionDidFinish()
     
 }
 
+#pragma mark Node Loaded from ccbi Section
+#pragma mark -
+
+/**
+*	Node loaded from ccbi file event 
+**/
 void MainGameLayer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
     auto ccRotateBy = RotateBy::create(20.0f, 360);
     auto ccRepeatForever = RepeatForever::create(ccRotateBy);
@@ -60,6 +71,9 @@ void MainGameLayer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
 	setDoorTouchListener();
 	setInventarItemsTouchListener();
 }
+
+#pragma mark Settings Menu Section
+#pragma mark -
 
 SEL_MenuHandler MainGameLayer::onResolveCCBCCMenuItemSelector(Ref * pTarget, const char * pSelectorName) {
 	CCLOG("name = %s", pSelectorName);
@@ -75,7 +89,9 @@ Control::Handler MainGameLayer::onResolveCCBCCControlSelector(Ref * pTarget, con
     CCB_SELECTORRESOLVER_CCCONTROL_GLUE(this, "onPlayPressedd", MainGameLayer::tappedPlayButton);
     return NULL;
 }
-
+/**
+*	Assigh sprite member from ccbi file
+**/
 bool MainGameLayer::onAssignCCBMemberVariable(Ref * pTarget, const char * pMemberVariableName, Node * pNode) {
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "door", Sprite *, this->mDoor);
 	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem1", Sprite *, this->mInvItem1);
@@ -152,7 +168,7 @@ void MainGameLayer::setDoorTouchListener()
         {
             this->mDoor->setZOrder(0);
         }
-		if(isOpenDoor) {
+		if(!isOpenDoor) {
 			this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
 			this->openScene("ccb/Levels/Level1.ccbi", "Level1Layer", Level1Loader::loader());
 		}
@@ -190,8 +206,7 @@ void MainGameLayer::setInventarItemsTouchListener()
         return false;
     };
 
-	listener1->onTouchMoved = [](Touch* touch, Event* event){
-    };
+	listener1->onTouchMoved = [](Touch* touch, Event* event){};
 
     //Process the touch end event
     listener1->onTouchEnded = [=](Touch* touch, Event* event){
@@ -199,14 +214,20 @@ void MainGameLayer::setInventarItemsTouchListener()
         log("sprite onTouchesEnded.. ");
         target->setOpacity(255);
         //Reset zOrder and the display sequence will change
-		if (target == this->mInvItem2)
-        {
-			inventar2CBFunc();
+		if (target == this->mInvItem1) {
+			this->currentInvItemNumber = 1;
             this->mInvItem2->setZOrder(100);
-        }
-        else if(target == this->mInvItem2)
-        {
+        } else if(target == this->mInvItem2) {
+			this->currentInvItemNumber = 2;
+			if(levelNumber > 0)
+				inventoryLogicCallback();
             this->mInvItem2->setZOrder(0);
+        } else if(target == this->mInvItem3) {
+			this->currentInvItemNumber = 3;
+        } else if(target == this->mInvItem4) {
+			this->currentInvItemNumber = 4;
+        } else if(target == this->mInvItem5) {
+			this->currentInvItemNumber = 5;
         }
 
     };
@@ -251,29 +272,14 @@ void MainGameLayer::openScene(const char * pCCBFileName, const char * nodeName, 
     transitionColor.b = 0;
     
     Director::getInstance()->pushScene(TransitionFade::create(0.5f, scene, transitionColor));
+} 
+
+int MainGameLayer::getItemIndexNumber()
+{
+	for (int i = 0; i < itemsSolutionArray.size(); i++) {
+		if(itemsSolutionArray[i] == 0)
+			return i;
+	}
+	return 0;
 }
 
-void MainGameLayer::setInventar1CallBackFunction(InventarCallbackFunc func) 
-{
-	this->inventar1CBFunc = func;
-}
-
-void MainGameLayer::setInventar2CallBackFunction(InventarCallbackFunc func) 
-{
-	this->inventar2CBFunc = func;
-}
-
-void MainGameLayer::setInventar3CallBackFunction(InventarCallbackFunc func) 
-{
-	this->inventar3CBFunc = func;
-}
-
-void MainGameLayer::setInventar4CallBackFunction(InventarCallbackFunc func) 
-{
-	this->inventar4CBFunc = func;
-}
-
-void MainGameLayer::setInventar5CallBackFunction(InventarCallbackFunc func) 
-{
-	this->inventar5CBFunc = func;
-}
