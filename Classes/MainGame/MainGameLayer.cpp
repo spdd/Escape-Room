@@ -15,11 +15,28 @@ MainGameLayer::MainGameLayer()
 	mInvItem5(nullptr)
 {
 	this->isOpenDoor = false;
+	this->isInvItem1Selected = false;
+	this->isInvItem2Selected = false;
+	this->isInvItem3Selected = false;
+	this->isInvItem4Selected = false;
+	this->isInvItem5Selected = false;
+
 	this->levelNumber = 0;
 	this->currentInvItemNumber = -1;
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 5; i++)
 		itemsSolutionArray[i] = 0;
-	}
+
+	this->itemsCallbackArray.push_back(invItem1LogicCallback);
+	this->itemsCallbackArray.push_back(invItem2LogicCallback);
+	this->itemsCallbackArray.push_back(invItem3LogicCallback);
+	this->itemsCallbackArray.push_back(invItem4LogicCallback);
+	this->itemsCallbackArray.push_back(invItem5LogicCallback);
+
+	this->itemsSpriteArray.push_back(mInvItem1);
+	this->itemsSpriteArray.push_back(mInvItem2);
+	this->itemsSpriteArray.push_back(mInvItem3);
+	this->itemsSpriteArray.push_back(mInvItem4);
+	this->itemsSpriteArray.push_back(mInvItem5);
 }
 
 MainGameLayer::~MainGameLayer() 
@@ -215,12 +232,16 @@ void MainGameLayer::setInventarItemsTouchListener()
         target->setOpacity(255);
         //Reset zOrder and the display sequence will change
 		if (target == this->mInvItem1) {
-			this->currentInvItemNumber = 1;
-            this->mInvItem2->setZOrder(100);
+			if(itemsSolutionArray[0] == 1) {
+				this->currentInvItemNumber = 1;
+				invItem1LogicCallback();
+			}
         } else if(target == this->mInvItem2) {
-			this->currentInvItemNumber = 2;
-			if(levelNumber > 0)
-				inventoryLogicCallback();
+			if(itemsSolutionArray[1] == 1) {
+				this->currentInvItemNumber = 2;
+				invItem2LogicCallback();
+			}
+				
             this->mInvItem2->setZOrder(0);
         } else if(target == this->mInvItem3) {
 			this->currentInvItemNumber = 3;

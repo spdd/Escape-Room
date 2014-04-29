@@ -17,9 +17,17 @@ public:
 	CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(MainGameLayer, create);
 
 	bool isOpenDoor;
+	bool isInvItem1Selected;
+	bool isInvItem2Selected;
+	bool isInvItem3Selected;
+	bool isInvItem4Selected;
+	bool isInvItem5Selected;
+
 	int levelNumber;
 	int currentInvItemNumber;
 	std::vector<int> itemsSolutionArray; 
+	std::vector<std::function<void()>> itemsCallbackArray;
+	std::vector<cocos2d::Sprite*> itemsSpriteArray;
 
 	int getItemIndexNumber();
 
@@ -48,7 +56,11 @@ public:
 
 protected:
 	// callback function pointer for inventar click logic
-	std::function<void()> inventoryLogicCallback;
+	std::function<void()> invItem1LogicCallback;
+	std::function<void()> invItem2LogicCallback;
+	std::function<void()> invItem3LogicCallback;
+	std::function<void()> invItem4LogicCallback;
+	std::function<void()> invItem5LogicCallback;
 
 	cocos2d::Sprite * mDoor;
 	cocos2d::Sprite * mInvItem1;

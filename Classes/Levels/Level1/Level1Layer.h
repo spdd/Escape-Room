@@ -19,6 +19,9 @@ public:
 	void item2FuncCallback();
  	void setGameObjectTouchListener();
 
+	void gameInvObject1FuncCallback();
+	void gameInvObjToGameObj();
+
 protected:
 	cocos2d::Sprite * mInvObject1;
 };
