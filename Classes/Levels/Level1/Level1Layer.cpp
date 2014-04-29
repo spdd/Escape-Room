@@ -2,6 +2,6 @@
 
 Level1Layer::Level1Layer() : MainGameLayer() 
 {
-	levelNumber = 1;
+	this->levelNumber = 1;
 }
 Level1Layer::~Level1Layer() {}

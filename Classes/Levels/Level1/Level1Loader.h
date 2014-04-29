@@ -6,10 +6,10 @@
 #include "extensions/cocos-ext.h"
 #include "cocosbuilder/CocosBuilder.h"
 
-class MainGameLoader : public cocosbuilder::LayerLoader
+class Level1Loader : public cocosbuilder::LayerLoader
 {
 public: 
-    CCB_STATIC_NEW_AUTORELEASE_OBJECT_METHOD(MainGameLoader, loader);
+    CCB_STATIC_NEW_AUTORELEASE_OBJECT_METHOD(Level1Loader, loader);
 protected:
 	CCB_VIRTUAL_NEW_AUTORELEASE_CREATECCNODE_METHOD(Level1Layer);
 };

@@ -13,7 +13,9 @@ MainGameLayer::MainGameLayer()
 	mInvItem3(nullptr),
 	mInvItem4(nullptr),
 	mInvItem5(nullptr)
-{}
+{
+	this->isOpenDoor = false;
+}
 
 MainGameLayer::~MainGameLayer() 
 {
@@ -152,7 +154,7 @@ void MainGameLayer::setDoorTouchListener()
         }
 		if(isOpenDoor) {
 			this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
-			this->openScene("Level1Scene.ccbi", "Level1Layer", Level1Loader::loader());
+			this->openScene("ccb/Levels/Level1.ccbi", "Level1Layer", Level1Loader::loader());
 		}
 
     };
