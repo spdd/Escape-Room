@@ -23,6 +23,12 @@ public:
 	bool isInvItem4Selected;
 	bool isInvItem5Selected;
 
+	int invItem1Index;
+	int invItem2Index;
+	int invItem3Index;
+	int invItem4Index;
+	int invItem5Index;
+
 	int levelNumber;
 	int currentInvItemNumber;
 	std::vector<int> itemsSolutionArray; 

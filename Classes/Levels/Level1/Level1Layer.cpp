@@ -17,6 +17,7 @@ Level1Layer::~Level1Layer()
 
 void Level1Layer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
 	MainGameLayer::onNodeLoaded(node, nodeLoader);
+	setInvGameObjectTouchListener();
 	// callbacks for inventory touches
 	//inventoryLogicCallback = [this]() { this->item2FuncCallback(); };
 }
@@ -43,7 +44,7 @@ void Level1Layer::item2FuncCallback()
 #pragma mark Game Objects Touch Logic
 #pragma mark -
 
-void Level1Layer::setGameObjectTouchListener()
+void Level1Layer::setInvGameObjectTouchListener()
 {
 	auto listener1 = EventListenerTouchOneByOne::create();
 	listener1->setSwallowTouches(true);
@@ -76,14 +77,13 @@ void Level1Layer::setGameObjectTouchListener()
         auto target = static_cast<Sprite*>(event->getCurrentTarget());
         //log("sprite onTouchesEnded.. ");
 
-		if (target->getTag() == this->mInvObject1->getTag()) {
+		if (target == this->mInvObject1) {
 			if(!this->isInvItem1Selected) {
 				// todo set simple inventory images
 				int index = this->getItemIndexNumber();
-				cocos2d::Sprite* itemSprite = this->itemsSpriteArray[index];
-				//itemSprite->setTexture(TextureCache::getInstance()->addImage("exit.png"));
-				this->itemsCallbackArray[index] = [this]() { this->gameInvObject1FuncCallback(); };
-				
+				mInvItem1->setTexture(TextureCache::getInstance()->addImage("item_key.png"));
+				//this->itemsCallbackArray[index] = [this, &index]() { this->invItem1Index = index; this->gameInvObject1FuncCallback(); };
+				invItem1LogicCallback = [this, &index]() { this->invItem1Index = index; this->gameInvObject1FuncCallback(); };
 				this->itemsSolutionArray[index] = 1;
 			}
 			else {
@@ -96,15 +96,55 @@ void Level1Layer::setGameObjectTouchListener()
 	//_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem2);
 }
 
+void Level1Layer::setGameObjectTouchListener()
+{
+	auto listener1 = EventListenerTouchOneByOne::create();
+	listener1->setSwallowTouches(true);
+
+	listener1->onTouchBegan = [](Touch* touch, Event* event) {
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+
+        //Get the position of the current point relative to the button
+        Point locationInNode = target->convertToNodeSpace(touch->getLocation());
+        Size s = target->getContentSize();
+        Rect rect = Rect(0, 0, s.width, s.height);
+
+        //Check the click area
+        if (rect.containsPoint(locationInNode))
+        {			
+            target->setOpacity(180);
+            return true;
+        }
+        return false;
+    };
+
+	listener1->onTouchMoved = [](Touch* touch, Event* event){};
+
+    //Process the touch end event
+    listener1->onTouchEnded = [=](Touch* touch, Event* event){
+        auto target = static_cast<Sprite*>(event->getCurrentTarget());
+        //log("sprite onTouchesEnded.. ");
+
+		if (target == this->mInvObject1) {
+			if(this->isInvItem1Selected) {
+				// todo implm logic for open door
+				this->gameInvObjToGameObj();
+			}
+        }
+    };
+	//_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mInvObject1);
+}
+
 void Level1Layer::gameInvObject1FuncCallback()
 {
-	//item->setTexture(TextureCache::getInstance()->addImage("exit.png"));
+	if(this->invItem1Index != -1)
+		mInvItem1->setTexture(TextureCache::getInstance()->addImage("item_key_sel.png"));
+		//this->itemsSpriteArray[this->invItem1Index]->setTexture(TextureCache::getInstance()->addImage("item_key_sel.png"));
 	this->isInvItem1Selected = true;
-	// todo set highlines inventory images
+	this->isOpenDoor = true;
 }
 
 void Level1Layer::gameInvObjToGameObj()
 {
-	if(this->isInvItem1Selected)
-		;
+	
 }

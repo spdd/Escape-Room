@@ -24,7 +24,7 @@ MainGameLayer::MainGameLayer()
 	this->levelNumber = 0;
 	this->currentInvItemNumber = -1;
 	for (int i = 0; i < 5; i++)
-		itemsSolutionArray[i] = 0;
+		itemsSolutionArray.push_back(0);
 
 	this->itemsCallbackArray.push_back(invItem1LogicCallback);
 	this->itemsCallbackArray.push_back(invItem2LogicCallback);
@@ -37,6 +37,12 @@ MainGameLayer::MainGameLayer()
 	this->itemsSpriteArray.push_back(mInvItem3);
 	this->itemsSpriteArray.push_back(mInvItem4);
 	this->itemsSpriteArray.push_back(mInvItem5);
+
+	this->invItem1Index = -1;
+	this->invItem2Index = -1;
+	this->invItem3Index = -1;
+	this->invItem4Index = -1;
+	this->invItem5Index = -1;
 }
 
 MainGameLayer::~MainGameLayer() 
@@ -80,10 +86,6 @@ void MainGameLayer::onEnterTransitionDidFinish()
 *	Node loaded from ccbi file event 
 **/
 void MainGameLayer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
-    auto ccRotateBy = RotateBy::create(20.0f, 360);
-    auto ccRepeatForever = RepeatForever::create(ccRotateBy);
-	this->mInvItem1->runAction(ccRepeatForever);
-
 	// set touch listener
 	setDoorTouchListener();
 	setInventarItemsTouchListener();
@@ -185,7 +187,7 @@ void MainGameLayer::setDoorTouchListener()
         {
             this->mDoor->setZOrder(0);
         }
-		if(!isOpenDoor) {
+		if(isOpenDoor) {
 			this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
 			this->openScene("ccb/Levels/Level1.ccbi", "Level1Layer", Level1Loader::loader());
 		}
@@ -241,14 +243,22 @@ void MainGameLayer::setInventarItemsTouchListener()
 				this->currentInvItemNumber = 2;
 				invItem2LogicCallback();
 			}
-				
-            this->mInvItem2->setZOrder(0);
         } else if(target == this->mInvItem3) {
-			this->currentInvItemNumber = 3;
+			if(itemsSolutionArray[2] == 1) {
+				this->currentInvItemNumber = 3;
+				invItem3LogicCallback();
+			}
         } else if(target == this->mInvItem4) {
-			this->currentInvItemNumber = 4;
+			if(itemsSolutionArray[3] == 1) {
+				this->currentInvItemNumber = 4;
+				invItem4LogicCallback();
+			}
         } else if(target == this->mInvItem5) {
-			this->currentInvItemNumber = 5;
+			this->isOpenDoor = true;
+			if(itemsSolutionArray[4] == 1) {
+				this->currentInvItemNumber = 5;
+				invItem5LogicCallback();
+			}
         }
 
     };
