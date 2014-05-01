@@ -36,6 +36,7 @@ public:
 	std::vector<cocos2d::Sprite*> itemsSpriteArray;
 
 	int getItemIndexNumber();
+	void addFunctor(int index, std::function<void()> func);
 
 	void openScene(const char * pCCBFileName, const char * nodeName = NULL, cocosbuilder::NodeLoader * nodeLoader = NULL);
 	virtual cocos2d::SEL_MenuHandler onResolveCCBCCMenuItemSelector(Ref * pTarget, const char* pSelectorName);

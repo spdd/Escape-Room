@@ -81,9 +81,11 @@ void Level1Layer::setInvGameObjectTouchListener()
 			if(!this->isInvItem1Selected) {
 				// todo set simple inventory images
 				int index = this->getItemIndexNumber();
+				this->invItem1Index = getItemIndexNumber();
 				mInvItem1->setTexture(TextureCache::getInstance()->addImage("item_key.png"));
-				//this->itemsCallbackArray[index] = [this, &index]() { this->invItem1Index = index; this->gameInvObject1FuncCallback(); };
-				invItem1LogicCallback = [this, &index]() { this->invItem1Index = index; this->gameInvObject1FuncCallback(); };
+
+				std::function<void()> func = [this] { this->gameInvObject1FuncCallback(); };
+				this->addFunctor(index, func);
 				this->itemsSolutionArray[index] = 1;
 			}
 			else {
@@ -138,8 +140,10 @@ void Level1Layer::setGameObjectTouchListener()
 void Level1Layer::gameInvObject1FuncCallback()
 {
 	if(this->invItem1Index != -1)
-		mInvItem1->setTexture(TextureCache::getInstance()->addImage("item_key_sel.png"));
-		//this->itemsSpriteArray[this->invItem1Index]->setTexture(TextureCache::getInstance()->addImage("item_key_sel.png"));
+		this->itemsSpriteArray[this->invItem1Index]->setTexture(TextureCache::getInstance()->addImage("item_key_sel.png"));
+	
+	log("sprite vector:%d  callback vector: %d",itemsSpriteArray.size(),  itemsCallbackArray.size());
+	
 	this->isInvItem1Selected = true;
 	this->isOpenDoor = true;
 }

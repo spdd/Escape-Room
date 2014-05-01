@@ -32,12 +32,6 @@ MainGameLayer::MainGameLayer()
 	this->itemsCallbackArray.push_back(invItem4LogicCallback);
 	this->itemsCallbackArray.push_back(invItem5LogicCallback);
 
-	this->itemsSpriteArray.push_back(mInvItem1);
-	this->itemsSpriteArray.push_back(mInvItem2);
-	this->itemsSpriteArray.push_back(mInvItem3);
-	this->itemsSpriteArray.push_back(mInvItem4);
-	this->itemsSpriteArray.push_back(mInvItem5);
-
 	this->invItem1Index = -1;
 	this->invItem2Index = -1;
 	this->invItem3Index = -1;
@@ -86,6 +80,12 @@ void MainGameLayer::onEnterTransitionDidFinish()
 *	Node loaded from ccbi file event 
 **/
 void MainGameLayer::onNodeLoaded(Node * node,  NodeLoader * nodeLoader) {
+	this->itemsSpriteArray.push_back(mInvItem1);
+	this->itemsSpriteArray.push_back(mInvItem2);
+	this->itemsSpriteArray.push_back(mInvItem3);
+	this->itemsSpriteArray.push_back(mInvItem4);
+	this->itemsSpriteArray.push_back(mInvItem5);
+
 	// set touch listener
 	setDoorTouchListener();
 	setInventarItemsTouchListener();
@@ -312,5 +312,25 @@ int MainGameLayer::getItemIndexNumber()
 			return i;
 	}
 	return 0;
+}
+
+void MainGameLayer::addFunctor(int index, std::function<void()> func)
+{
+	switch (index)
+	{
+	case 0:
+		this->invItem1LogicCallback = func;
+	case 1:
+		this->invItem2LogicCallback = func;
+	case 2:
+		this->invItem3LogicCallback = func;
+	case 3:
+		this->invItem4LogicCallback = func;
+	case 4:
+		this->invItem5LogicCallback = func;
+	default:
+		break;
+	}
+
 }
 
