@@ -34,8 +34,5 @@ class LevelManager
 		std::string toString();
 		void saveLocal();
 		int getLastLevelNumber();
-
-		template <typename T> 
-		T strToType(std::string str);
 };
 #endif

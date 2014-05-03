@@ -81,6 +81,7 @@ int LevelManager::getLastLevelNumber()
 			return i;
 		}
 	}
+	return 0;
 }
 
 void LevelManager::loadNextLevel() 
@@ -90,17 +91,25 @@ void LevelManager::loadNextLevel()
 
 cocosbuilder::NodeLoader* LevelManager::getLevelLoader(int curLevelNumber)
 {
+	switch (curLevelNumber)
+	{
+	case 1:
+		return Level1Loader::loader();
+	case 2:
+		return Level1Loader::loader();
+
+	default:
+		break;
+	}
+	//T type;
+	//std::string classStrName =  "Level" + std::to_string(curLevelNumber) + "Loader";
+	//std::stringstream convert(classStrName);
+	//convert >> type;
+	//return type::loader();
+	//return mInstance->strToType<cocosbuilder::LayerLoader>(classStrName)::loader();
+	//return mInstance->levelsLoaderArray[curLevelNumber - 1];
 	return Level1Loader::loader();
-	//return levelsLoaderArray[curLevelNumber - 1];
 }
 
-template <typename T> 
-T LevelManager::strToType(std::string str)
-{
-	T type;
-	std::stringstream convert(str);
-    convert >> type;
-	return type;
-}
 
 
