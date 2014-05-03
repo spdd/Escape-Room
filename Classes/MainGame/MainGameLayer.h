@@ -32,7 +32,6 @@ public:
 	int levelNumber;
 	int currentInvItemNumber;
 	std::vector<int> itemsSolutionArray; 
-	std::vector<std::function<void()>> itemsCallbackArray;
 	std::vector<cocos2d::Sprite*> itemsSpriteArray;
 
 	int getItemIndexNumber();

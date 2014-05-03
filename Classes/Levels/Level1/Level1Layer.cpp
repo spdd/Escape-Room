@@ -142,7 +142,7 @@ void Level1Layer::gameInvObject1FuncCallback()
 	if(this->invItem1Index != -1)
 		this->itemsSpriteArray[this->invItem1Index]->setTexture(TextureCache::getInstance()->addImage("item_key_sel.png"));
 	
-	log("sprite vector:%d  callback vector: %d",itemsSpriteArray.size(),  itemsCallbackArray.size());
+	log("sprite vector:%d",itemsSpriteArray.size());
 	
 	this->isInvItem1Selected = true;
 	this->isOpenDoor = true;

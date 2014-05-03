@@ -2,6 +2,8 @@
 #define __LevelManager__
 
 #include "cocos2d.h"
+#include "extensions/cocos-ext.h"
+#include "cocosbuilder/CocosBuilder.h"
 #include <map>
 #include "../Constants/Constants.h"
 #include "json/document.h"
@@ -16,6 +18,9 @@ class LevelManager
 		void setLevelComplete();
 		void loadNextLevel();
 		void resetLevels();
+
+		cocosbuilder::NodeLoader* getLevelLoader(int curLevelNumber);
+		std::vector<cocosbuilder::NodeLoader*> levelsLoaderArray;
     
     protected:
         static LevelManager* mInstance;
@@ -29,5 +34,8 @@ class LevelManager
 		std::string toString();
 		void saveLocal();
 		int getLastLevelNumber();
+
+		template <typename T> 
+		T strToType(std::string str);
 };
 #endif

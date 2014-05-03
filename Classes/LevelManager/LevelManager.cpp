@@ -1,4 +1,5 @@
 #include "LevelManager.h"
+#include "../Levels/Level1/Level1Loader.h"
 
 LevelManager* LevelManager::mInstance = nullptr;
 
@@ -9,6 +10,10 @@ LevelManager* LevelManager::getInstance()
 {
 	if(!mInstance) {
 		mInstance = new LevelManager;
+		mInstance->mLevels = Constants::createMap();
+
+		mInstance->levelsLoaderArray.push_back(Level1Loader::loader());
+		//mInstance->levelsLoaderArray.push_back(Level2Loader::loader());
 	}
 
 	return mInstance;
@@ -81,6 +86,21 @@ int LevelManager::getLastLevelNumber()
 void LevelManager::loadNextLevel() 
 {
 	
+}
+
+cocosbuilder::NodeLoader* LevelManager::getLevelLoader(int curLevelNumber)
+{
+	return Level1Loader::loader();
+	//return levelsLoaderArray[curLevelNumber - 1];
+}
+
+template <typename T> 
+T LevelManager::strToType(std::string str)
+{
+	T type;
+	std::stringstream convert(str);
+    convert >> type;
+	return type;
 }
 
 

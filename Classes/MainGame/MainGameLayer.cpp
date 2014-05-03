@@ -1,5 +1,6 @@
 ﻿#include "MainGameLayer.h"
 #include "../TestHeader/TestHeaderLayerLoader.h"
+#include "../LevelManager/LevelManager.h"
 #include "../Levels/Level1/Level1Loader.h"
 
 USING_NS_CC;
@@ -21,16 +22,10 @@ MainGameLayer::MainGameLayer()
 	this->isInvItem4Selected = false;
 	this->isInvItem5Selected = false;
 
-	this->levelNumber = 0;
+	this->levelNumber = 1; // default 0
 	this->currentInvItemNumber = -1;
 	for (int i = 0; i < 5; i++)
 		itemsSolutionArray.push_back(0);
-
-	this->itemsCallbackArray.push_back(invItem1LogicCallback);
-	this->itemsCallbackArray.push_back(invItem2LogicCallback);
-	this->itemsCallbackArray.push_back(invItem3LogicCallback);
-	this->itemsCallbackArray.push_back(invItem4LogicCallback);
-	this->itemsCallbackArray.push_back(invItem5LogicCallback);
 
 	this->invItem1Index = -1;
 	this->invItem2Index = -1;
@@ -189,7 +184,12 @@ void MainGameLayer::setDoorTouchListener()
         }
 		if(isOpenDoor) {
 			this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
-			this->openScene("ccb/Levels/Level1.ccbi", "Level1Layer", Level1Loader::loader());
+			std::string ccbStrName =  "ccb/Levels/Level" + std::to_string(levelNumber) + ".ccbi";
+			std::string classStrName =  "Level" + std::to_string(levelNumber) + "Layer";
+			this->openScene(ccbStrName.c_str(), classStrName.c_str(), LevelManager::getInstance()->getLevelLoader(levelNumber));
+			//this->openScene(ccbStrName.c_str(), classStrName.c_str(), Level1Loader::loader());
+			itemsSpriteArray.clear();
+			itemsSolutionArray.clear();
 		}
 
     };
