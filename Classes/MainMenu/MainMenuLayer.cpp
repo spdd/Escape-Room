@@ -1,5 +1,6 @@
 #include "../TestHeader/TestHeaderLayerLoader.h"
 #include "../MainGame/MainGameLoader.h"
+#include "../Levels/Level1/Level1Loader.h"
 #include "MainMenuLayer.h"
 
 USING_NS_CC;
@@ -112,5 +113,5 @@ void MainMenuLayer::tappedPlayButton(Ref * pTarget, Control::EventType pControlE
 
 void MainMenuLayer::onMenuItemAClicked(cocos2d::Ref *pSender) {
 	CCLOG("onMenuItemAClicked");
-    this->openScene("ccb/MainGameScene.ccbi", "MainGameLayer", MainGameLoader::loader());
+	this->openScene("ccb/Levels/Level1.ccbi", "Level1Layer", Level1Loader::loader());
 }

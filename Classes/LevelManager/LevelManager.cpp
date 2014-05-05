@@ -1,5 +1,6 @@
 #include "LevelManager.h"
 #include "../Levels/Level1/Level1Loader.h"
+#include "../Levels/Level2/Level2Loader.h"
 
 LevelManager* LevelManager::mInstance = nullptr;
 
@@ -11,9 +12,6 @@ LevelManager* LevelManager::getInstance()
 	if(!mInstance) {
 		mInstance = new LevelManager;
 		mInstance->mLevels = Constants::createMap();
-
-		mInstance->levelsLoaderArray.push_back(Level1Loader::loader());
-		//mInstance->levelsLoaderArray.push_back(Level2Loader::loader());
 	}
 
 	return mInstance;
@@ -96,7 +94,7 @@ cocosbuilder::NodeLoader* LevelManager::getLevelLoader(int curLevelNumber)
 	case 1:
 		return Level1Loader::loader();
 	case 2:
-		return Level1Loader::loader();
+		return Level2Loader::loader();
 
 	default:
 		break;

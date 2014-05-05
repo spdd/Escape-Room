@@ -20,7 +20,6 @@ class LevelManager
 		void resetLevels();
 
 		cocosbuilder::NodeLoader* getLevelLoader(int curLevelNumber);
-		std::vector<cocosbuilder::NodeLoader*> levelsLoaderArray;
     
     protected:
         static LevelManager* mInstance;

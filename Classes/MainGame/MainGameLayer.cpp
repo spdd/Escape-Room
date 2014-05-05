@@ -183,10 +183,11 @@ void MainGameLayer::setDoorTouchListener()
             this->mDoor->setZOrder(0);
         }
 		if(isOpenDoor) {
+			int nextLevel = levelNumber + 1;
 			this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
-			std::string ccbStrName =  "ccb/Levels/Level" + std::to_string(levelNumber) + ".ccbi";
-			std::string classStrName =  "Level" + std::to_string(levelNumber) + "Layer";
-			this->openScene(ccbStrName.c_str(), classStrName.c_str(), LevelManager::getInstance()->getLevelLoader(levelNumber));
+			std::string ccbStrName =  "ccb/Levels/Level" + std::to_string(nextLevel) + ".ccbi";
+			std::string classStrName =  "Level" + std::to_string(nextLevel) + "Layer";
+			this->openScene(ccbStrName.c_str(), classStrName.c_str(), LevelManager::getInstance()->getLevelLoader(nextLevel));
 			//this->openScene(ccbStrName.c_str(), classStrName.c_str(), Level1Loader::loader());
 			itemsSpriteArray.clear();
 			itemsSolutionArray.clear();

@@ -16,7 +16,6 @@ public:
 	Level1Layer();
 	virtual ~Level1Layer();
 
-	void item2FuncCallback();
  	void setInvGameObjectTouchListener();
  	void setGameObjectTouchListener();
 

@@ -32,17 +32,8 @@ bool Level1Layer::onAssignCCBMemberVariable(Ref * pTarget, const char * pMemberV
 }
 
 #pragma mark Inventory Items Callback Logic
-#pragma mark -
-
-void Level1Layer::item2FuncCallback()
-{
-	auto ccRotateBy = RotateBy::create(20.0f, 360);
-    auto ccRepeatForever = RepeatForever::create(ccRotateBy);
-	this->mInvItem2->runAction(ccRepeatForever);
-}
 
 #pragma mark Game Objects Touch Logic
-#pragma mark -
 
 void Level1Layer::setInvGameObjectTouchListener()
 {
@@ -94,7 +85,7 @@ void Level1Layer::setInvGameObjectTouchListener()
         }
 
     };
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mInvObject1);
+	//_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mInvObject1);
 	//_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mInvItem2);
 }
 
