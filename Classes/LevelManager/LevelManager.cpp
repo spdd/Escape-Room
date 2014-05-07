@@ -1,6 +1,7 @@
 #include "LevelManager.h"
 #include "../Levels/Level1/Level1Loader.h"
 #include "../Levels/Level2/Level2Loader.h"
+#include "../Levels/Level3/Level3Loader.h"
 
 LevelManager* LevelManager::mInstance = nullptr;
 
@@ -95,7 +96,8 @@ cocosbuilder::NodeLoader* LevelManager::getLevelLoader(int curLevelNumber)
 		return Level1Loader::loader();
 	case 2:
 		return Level2Loader::loader();
-
+	case 3:
+		return Level3Loader::loader();
 	default:
 		break;
 	}
