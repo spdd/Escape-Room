@@ -17,6 +17,7 @@ public:
 	CCB_STATIC_NEW_AUTORELEASE_OBJECT_WITH_INIT_METHOD(MainGameLayer, create);
 
 	bool isOpenDoor;
+	bool isDoorOneSprite;
 	bool isInvItem1Selected;
 	bool isInvItem2Selected;
 	bool isInvItem3Selected;
@@ -69,6 +70,7 @@ protected:
 	std::function<void()> invItem5LogicCallback;
 
 	cocos2d::Sprite * mDoor;
+	cocos2d::Sprite * mExit;
 	cocos2d::Sprite * mInvItem1;
     cocos2d::Sprite * mInvItem2;
 	cocos2d::Sprite * mInvItem3;

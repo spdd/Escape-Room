@@ -9,6 +9,7 @@ using namespace cocosbuilder;
 
 MainGameLayer::MainGameLayer()
 	:mDoor(nullptr),
+	mExit(nullptr),
 	mInvItem1(nullptr),
 	mInvItem2(nullptr),
 	mInvItem3(nullptr),
@@ -16,6 +17,7 @@ MainGameLayer::MainGameLayer()
 	mInvItem5(nullptr)
 {
 	this->isOpenDoor = false;
+	this->isDoorOneSprite = false;
 	this->isInvItem1Selected = false;
 	this->isInvItem2Selected = false;
 	this->isInvItem3Selected = false;
@@ -37,6 +39,7 @@ MainGameLayer::MainGameLayer()
 MainGameLayer::~MainGameLayer() 
 {
 	CC_SAFE_RELEASE_NULL(mDoor);
+	CC_SAFE_RELEASE_NULL(mExit);
     CC_SAFE_RELEASE_NULL(mInvItem1);
     CC_SAFE_RELEASE_NULL(mInvItem2);
     CC_SAFE_RELEASE_NULL(mInvItem3);
@@ -108,6 +111,7 @@ Control::Handler MainGameLayer::onResolveCCBCCControlSelector(Ref * pTarget, con
 **/
 bool MainGameLayer::onAssignCCBMemberVariable(Ref * pTarget, const char * pMemberVariableName, Node * pNode) {
     CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "door", Sprite *, this->mDoor);
+	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "exit", Sprite *, this->mExit);
 	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem1", Sprite *, this->mInvItem1);
 	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem2", Sprite *, this->mInvItem2);
 	CCB_MEMBERVARIABLEASSIGNER_GLUE(this, "invItem3", Sprite *, this->mInvItem3);
@@ -184,7 +188,14 @@ void MainGameLayer::setDoorTouchListener()
         }
 		if(isOpenDoor) {
 			int nextLevel = levelNumber + 1;
-			this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
+
+			if(!isDoorOneSprite) {
+				this->mDoor->setVisible(false);
+				this->mExit->setVisible(true);
+			}
+			else {
+				this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
+			}
 			std::string ccbStrName =  "ccb/Levels/Level" + std::to_string(nextLevel) + ".ccbi";
 			std::string classStrName =  "Level" + std::to_string(nextLevel) + "Layer";
 			this->openScene(ccbStrName.c_str(), classStrName.c_str(), LevelManager::getInstance()->getLevelLoader(nextLevel));

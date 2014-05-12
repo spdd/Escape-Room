@@ -16,6 +16,7 @@ Level3Layer::Level3Layer() : MainGameLayer()
 	this->_lastTime = 0.0;
 	this->mInvObject1 = nullptr;
 	this->levelNumber = 3;
+	this->isDoorOneSprite = true;
 }
 Level3Layer::~Level3Layer() 
 {
@@ -130,7 +131,8 @@ void Level3Layer::setInvGameObjectTouchListener()
 				// todo set simple inventory images
 				int index = this->getItemIndexNumber();
 				this->invItem1Index = getItemIndexNumber();
-				mInvItem1->setTexture(TextureCache::getInstance()->addImage("item_key.png"));
+				if(index == 0)
+					mInvItem1->setTexture(TextureCache::getInstance()->addImage("item_key.png"));
 
 				std::function<void()> func = [this] { this->gameInvObject1FuncCallback(); };
 				this->addFunctor(index, func);
