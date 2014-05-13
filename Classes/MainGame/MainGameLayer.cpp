@@ -196,6 +196,8 @@ void MainGameLayer::setDoorTouchListener()
 			else {
 				this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
 			}
+			nextLevel = 6; // for levels test
+
 			std::string ccbStrName =  "ccb/Levels/Level" + std::to_string(nextLevel) + ".ccbi";
 			std::string classStrName =  "Level" + std::to_string(nextLevel) + "Layer";
 			this->openScene(ccbStrName.c_str(), classStrName.c_str(), LevelManager::getInstance()->getLevelLoader(nextLevel));
