@@ -186,7 +186,7 @@ void MainGameLayer::setDoorTouchListener()
         {
             this->mDoor->setZOrder(0);
         }
-		if(isOpenDoor) {
+		if(isOpenDoor && this->mDoor->isVisible()) {
 			int nextLevel = levelNumber + 1;
 
 			if(!isDoorOneSprite) {
@@ -196,7 +196,7 @@ void MainGameLayer::setDoorTouchListener()
 			else {
 				this->mDoor->setTexture(TextureCache::getInstance()->addImage("exit.png"));
 			}
-			nextLevel = 7; // for levels test
+			nextLevel = 8; // for levels test
 
 			std::string ccbStrName =  "ccb/Levels/Level" + std::to_string(nextLevel) + ".ccbi";
 			std::string classStrName =  "Level" + std::to_string(nextLevel) + "Layer";
