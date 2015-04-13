@@ -140,7 +140,6 @@ void Level9Layer::setGameObjectTouchListener()
     //Process the touch end event
     listener1->onTouchEnded = [=](Touch* touch, Event* event){
         auto target = static_cast<Sprite*>(event->getCurrentTarget());
-        //log("sprite onTouchesEnded.. ");
 
 		if (target == this->mBack1 && !(this->rotateCount1 == 360)) {
 			this->rotateCount1 = rotateCount1 + 90;
@@ -162,20 +161,19 @@ void Level9Layer::setGameObjectTouchListener()
 			this->mBack2->setVisible(false);
 			this->mBack3->setVisible(false);
 			this->mBack4->setVisible(false);
-			this->mBack1->removeAllChildren();
-			this->mBack2->removeAllChildren();
-			this->mBack3->removeAllChildren();
-			this->mBack4->removeAllChildren();
+			//this->mBack1->removeAllChildren();
+			//this->mBack2->removeAllChildren();
+			//this->mBack3->removeAllChildren();
+			//this->mBack4->removeAllChildren();
 
 			this->mBackButton->setVisible(true);
 
-			auto actionBy = MoveTo::create(2, Point(this->mDoor->getPosition().x - 200, this->mDoor->getPosition().y));
-			mDoor->runAction(actionBy);
+			auto actionTo = MoveTo::create(2, Point(this->mDoor->getPosition().x - 200, this->mDoor->getPosition().y));
+			mDoor->runAction(actionTo);
 			runBackMove = true;
 			isOpenDoor = true;
 		}
     };
-	//_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mBackButton);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1, this->mBack1);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mBack2);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener1->clone(), this->mBack3);

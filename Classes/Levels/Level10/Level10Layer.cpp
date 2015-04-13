@@ -7,7 +7,7 @@ using namespace cocosbuilder;
 Level10Layer::Level10Layer() : MainGameLayer() 
 {
 	this->mInvObject1 = nullptr;
-	this->levelNumber = 1;
+	this->levelNumber = 10;
 }
 Level10Layer::~Level10Layer() 
 {

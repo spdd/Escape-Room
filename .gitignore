@@ -157,4 +157,5 @@ $RECYCLE.BIN/
 
 # Cocos2d Source file
 cocos2d/
+cocos2d_old_rc2/
 Resources/

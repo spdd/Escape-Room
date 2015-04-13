@@ -24,7 +24,7 @@ MainGameLayer::MainGameLayer()
 	this->isInvItem4Selected = false;
 	this->isInvItem5Selected = false;
 
-	this->levelNumber = 1; // default 0
+	this->levelNumber = 0; // default 0
 	this->currentInvItemNumber = -1;
 	for (int i = 0; i < 5; i++)
 		itemsSolutionArray.push_back(0);
